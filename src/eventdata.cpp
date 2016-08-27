@@ -48,7 +48,7 @@ int EventData::is_in(QDate date)
         {
             if(i >= maxi_index && maxi_index != -1)
                 return -1;
-            now = now.addMonths(number);
+            now = start_date.addMonths(number * (i+1));
         }
         if(now != date)
             return -1;
@@ -65,7 +65,7 @@ int EventData::is_in(QDate date)
         {
             if(i >= maxi_index && maxi_index != -1)
                 return -1;
-            now = now.addYears(number);
+            now = start_date.addYears(number * (i+1));
         }
         if(now != date)
             return -1;
