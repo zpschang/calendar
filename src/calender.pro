@@ -1,20 +1,38 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2016-08-22T19:23:57
+# Project created by QtCreator 2016-08-23T10:09:45
 #
 #-------------------------------------------------
 
 QT       += core gui
+QT       += xml
 CONFIG   += c++11
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = calender
+TARGET = calendar
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    littlewidget.cpp \
+    block.cpp \
+    eventdata.cpp \
+    eventhandler.cpp \
+    form.cpp \
+    clicklabel.cpp \
+    draglabel.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    littlewidget.h \
+    block.h \
+    eventdata.h \
+    eventhandler.h \
+    form.h \
+    clicklabel.h \
+    draglabel.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    littlewidget.ui \
+    block.ui \
+    form.ui

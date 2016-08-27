@@ -31,7 +31,7 @@ void EventHandler::write_data()
     QString file_name = "user_" + user_name + ".data";
     QFile file(file_name);
     file.open(QIODevice::WriteOnly);
-    for(int i = 0; i < events.size(); i++)
+    for(int i = 0; i < (int)events.size(); i++)
         file.write((char*)events[i], sizeof(EventData));
     file.close();
 }

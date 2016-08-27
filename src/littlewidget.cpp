@@ -163,7 +163,7 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
                 form->ui->pushButton_3->setVisible(false);
                 form->setWindowTitle("编辑事件");
                 form->show();
-                for(int i = 0; i < handler.events.size(); i++)
+                for(int i = 0; i < (int)handler.events.size(); i++)
                     if(handler.events[i] == event)
                     {
                         handler.events.erase(handler.events.begin() + i);
