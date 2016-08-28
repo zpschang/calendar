@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     eventhandler.cpp \
     form.cpp \
     clicklabel.cpp \
-    draglabel.cpp
+    draglabel.cpp \
+    dialogwidget.cpp
 
 HEADERS  += mainwindow.h \
     littlewidget.h \
@@ -30,9 +31,11 @@ HEADERS  += mainwindow.h \
     eventhandler.h \
     form.h \
     clicklabel.h \
-    draglabel.h
+    draglabel.h \
+    dialogwidget.h
 
 FORMS    += mainwindow.ui \
     littlewidget.ui \
     block.ui \
-    form.ui
+    form.ui \
+    dialogwidget.ui

@@ -12,6 +12,8 @@ LittleWidget::LittleWidget(EventHandler &_handler, QDate _date, QWidget *parent)
 {
     ui->setupUi(this);
     menu_window = 0;
+    form = 0;
+    dialog = 0;
     setWindowOpacity(0.9);
     QPalette palette;
     palette.setColor(QPalette::Window, QColor(255, 255, 255, 255));
@@ -78,7 +80,13 @@ LittleWidget::LittleWidget(EventHandler &_handler, QDate _date, QWidget *parent)
         delete this;
     });
     connect(btn_add, &QPushButton::clicked, [=](){
+        if(this->form)
+        {
+            delete this->form;
+            this->form = 0;
+        }
         Form *form = new Form(handler);
+        this->form = form;
         form->show();
         form->ui->dateEdit->setDate(date);
         connect(form, &Form::close_signal, [=](){
@@ -134,8 +142,7 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
             new_window->setPalette(palette);
             new_window->setWindowOpacity(0.9);
             qDebug() << m_map[widget].first << m_map[widget].second;
-            QMenu *menu = new QMenu("aaa", this);
-            menu->addAction("aaa");
+
             ClickLabel *edit, *del;
             QVBoxLayout *v_layout = new QVBoxLayout(new_window);
             edit = new ClickLabel("编辑事件");
@@ -148,9 +155,14 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
             EventData *event = m_map[widget].first;
             int index = m_map[widget].second;
 
-            connect(edit, &ClickLabel::left_clicked, [=]{
-                delete new_window;
+            connect(edit, &ClickLabel::left_clicked, [=](){
+                if(this->form)
+                {
+                    delete this->form;
+                    this->form = 0;
+                }
                 Form *form = new Form(handler);
+                this->form = form;
                 form->ui->dateEdit->setDate(event->start_date);
                 form->ui->timeEdit->setTime(event->start_time);
                 form->ui->timeEdit_2->setTime(event->end_time);
@@ -174,6 +186,42 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
                     delete this;
                 });
             });
+
+            connect(del, &ClickLabel::left_clicked, [=](){
+                if(this->dialog)
+                {
+                    delete this->dialog;
+                    this->dialog = 0;
+                }
+                DialogWidget *dialog = new DialogWidget;
+                this->dialog = dialog;
+                //dialog->setWindowFlags(Qt::FramelessWindowHint);
+                //dialog->setWindowOpacity(0.9);
+                dialog->show();
+                connect(dialog, &DialogWidget::del_0, [=](){
+                    delete dialog;
+                    event->del_day(index);
+                    emit close_signal(true);
+                    delete this;
+                });
+                connect(dialog, &DialogWidget::del_1, [=](){
+                    delete dialog;
+                    event->del_day_after(index);
+                    emit close_signal(true);
+                    delete this;
+                });
+                connect(dialog, &DialogWidget::del_2, [=](){
+                    delete dialog;
+                    for(int i = 0; i < (int)handler.events.size(); i++)
+                        if(handler.events[i] == event)
+                        {
+                            handler.events.erase(handler.events.begin() + i);
+                            break;
+                        }
+                    emit close_signal(true);
+                    delete this;
+                });
+            });
             return true;
         }
     }
@@ -189,6 +237,16 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
         return true;
     }
     return QWidget::eventFilter(watched, event);
+}
+
+void LittleWidget::closeEvent(QCloseEvent *)
+{
+    if(form)
+        delete form;
+    if(menu_window)
+        delete menu_window;
+    if(dialog)
+        delete dialog;
 }
 
 LittleWidget::~LittleWidget()

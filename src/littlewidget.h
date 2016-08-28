@@ -13,6 +13,7 @@
 #include "eventhandler.h"
 #include "form.h"
 #include "clicklabel.h"
+#include "dialogwidget.h"
 using namespace std;
 
 namespace Ui {
@@ -33,10 +34,13 @@ public:
     QPoint pointer;
     QDate date;
     QWidget *menu_window;
+    Form *form;
+    DialogWidget *dialog;
     map<QWidget*, pair<EventData*, int> > m_map;
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+    void closeEvent(QCloseEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
     ~LittleWidget();
     Ui::LittleWidget *ui;

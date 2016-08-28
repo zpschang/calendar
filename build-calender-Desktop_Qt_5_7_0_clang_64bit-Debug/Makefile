@@ -56,12 +56,14 @@ SOURCES       = ../src/main.cpp \
 		../src/eventhandler.cpp \
 		../src/form.cpp \
 		../src/clicklabel.cpp \
-		../src/draglabel.cpp moc_mainwindow.cpp \
+		../src/draglabel.cpp \
+		../src/dialogwidget.cpp moc_mainwindow.cpp \
 		moc_littlewidget.cpp \
 		moc_block.cpp \
 		moc_form.cpp \
 		moc_clicklabel.cpp \
-		moc_draglabel.cpp
+		moc_draglabel.cpp \
+		moc_dialogwidget.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		littlewidget.o \
@@ -71,12 +73,14 @@ OBJECTS       = main.o \
 		form.o \
 		clicklabel.o \
 		draglabel.o \
+		dialogwidget.o \
 		moc_mainwindow.o \
 		moc_littlewidget.o \
 		moc_block.o \
 		moc_form.o \
 		moc_clicklabel.o \
-		moc_draglabel.o
+		moc_draglabel.o \
+		moc_dialogwidget.o
 DIST          = ../../../Qt5/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/qdevice.pri \
 		../../../Qt5/5.7/clang_64/mkspecs/features/device_config.prf \
@@ -209,6 +213,7 @@ DIST          = ../../../Qt5/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt5/5.7/clang_64/mkspecs/features/spec_post.prf \
+		../src/.qmake.stash \
 		../../../Qt5/5.7/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -238,7 +243,8 @@ DIST          = ../../../Qt5/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../src/eventhandler.h \
 		../src/form.h \
 		../src/clicklabel.h \
-		../src/draglabel.h ../src/main.cpp \
+		../src/draglabel.h \
+		../src/dialogwidget.h ../src/main.cpp \
 		../src/mainwindow.cpp \
 		../src/littlewidget.cpp \
 		../src/block.cpp \
@@ -246,7 +252,8 @@ DIST          = ../../../Qt5/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../src/eventhandler.cpp \
 		../src/form.cpp \
 		../src/clicklabel.cpp \
-		../src/draglabel.cpp
+		../src/draglabel.cpp \
+		../src/dialogwidget.cpp
 QMAKE_TARGET  = calendar
 DESTDIR       = 
 TARGET        = calendar.app/Contents/MacOS/calendar
@@ -255,7 +262,7 @@ TARGET        = calendar.app/Contents/MacOS/calendar
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h $(OBJECTS)  
 	@test -d calendar.app/Contents/MacOS/ || mkdir -p calendar.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -391,6 +398,7 @@ Makefile: ../src/calender.pro ../../../Qt5/5.7/clang_64/mkspecs/macx-clang/qmake
 		../../../Qt5/5.7/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt5/5.7/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt5/5.7/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -551,6 +559,7 @@ Makefile: ../src/calender.pro ../../../Qt5/5.7/clang_64/mkspecs/macx-clang/qmake
 ../../../Qt5/5.7/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt5/5.7/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt5/5.7/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt5/5.7/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt5/5.7/clang_64/mkspecs/features/default_pre.prf:
 ../../../Qt5/5.7/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -607,9 +616,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/mainwindow.h ../src/littlewidget.h ../src/block.h ../src/eventdata.h ../src/eventhandler.h ../src/form.h ../src/clicklabel.h ../src/draglabel.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/main.cpp ../src/mainwindow.cpp ../src/littlewidget.cpp ../src/block.cpp ../src/eventdata.cpp ../src/eventhandler.cpp ../src/form.cpp ../src/clicklabel.cpp ../src/draglabel.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/mainwindow.ui ../src/littlewidget.ui ../src/block.ui ../src/form.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/mainwindow.h ../src/littlewidget.h ../src/block.h ../src/eventdata.h ../src/eventhandler.h ../src/form.h ../src/clicklabel.h ../src/draglabel.h ../src/dialogwidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/main.cpp ../src/mainwindow.cpp ../src/littlewidget.cpp ../src/block.cpp ../src/eventdata.cpp ../src/eventhandler.cpp ../src/form.cpp ../src/clicklabel.cpp ../src/draglabel.cpp ../src/dialogwidget.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/mainwindow.ui ../src/littlewidget.ui ../src/block.ui ../src/form.ui ../src/dialogwidget.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -635,9 +644,9 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp moc_dialogwidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp moc_dialogwidget.cpp
 moc_mainwindow.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
@@ -688,6 +697,7 @@ moc_mainwindow.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QM
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDrag \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
+		../src/dialogwidget.h \
 		../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/bin/moc
 	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/mainwindow.h -o moc_mainwindow.cpp
@@ -728,6 +738,7 @@ moc_littlewidget.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDrag \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
+		../src/dialogwidget.h \
 		../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/bin/moc
 	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/littlewidget.h -o moc_littlewidget.cpp
@@ -808,11 +819,17 @@ moc_draglabel.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QLa
 		../../../Qt5/5.7/clang_64/bin/moc
 	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/draglabel.h -o moc_draglabel.cpp
 
+moc_dialogwidget.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../src/dialogwidget.h \
+		../../../Qt5/5.7/clang_64/bin/moc
+	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/dialogwidget.h -o moc_dialogwidget.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h
+compiler_uic_make_all: ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h
+	-$(DEL_FILE) ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h
 ui_mainwindow.h: ../src/mainwindow.ui \
 		../../../Qt5/5.7/clang_64/bin/uic
 	/Users/pushi/Qt5/5.7/clang_64/bin/uic ../src/mainwindow.ui -o ui_mainwindow.h
@@ -828,6 +845,10 @@ ui_block.h: ../src/block.ui \
 ui_form.h: ../src/form.ui \
 		../../../Qt5/5.7/clang_64/bin/uic
 	/Users/pushi/Qt5/5.7/clang_64/bin/uic ../src/form.ui -o ui_form.h
+
+ui_dialogwidget.h: ../src/dialogwidget.ui \
+		../../../Qt5/5.7/clang_64/bin/uic
+	/Users/pushi/Qt5/5.7/clang_64/bin/uic ../src/dialogwidget.ui -o ui_dialogwidget.h
 
 compiler_rez_source_make_all:
 compiler_rez_source_clean:
@@ -892,6 +913,7 @@ main.o: ../src/main.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDrag \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
+		../src/dialogwidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QCalendarWidget \
@@ -951,6 +973,7 @@ mainwindow.o: ../src/mainwindow.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDrag \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
+		../src/dialogwidget.h \
 		ui_mainwindow.h \
 		ui_block.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../src/mainwindow.cpp
@@ -992,6 +1015,7 @@ littlewidget.o: ../src/littlewidget.cpp ../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDrag \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
+		../src/dialogwidget.h \
 		ui_littlewidget.h \
 		ui_form.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
@@ -1101,6 +1125,12 @@ draglabel.o: ../src/draglabel.cpp ../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o draglabel.o ../src/draglabel.cpp
 
+dialogwidget.o: ../src/dialogwidget.cpp ../src/dialogwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		ui_dialogwidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogwidget.o ../src/dialogwidget.cpp
+
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
@@ -1118,6 +1148,9 @@ moc_clicklabel.o: moc_clicklabel.cpp
 
 moc_draglabel.o: moc_draglabel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_draglabel.o moc_draglabel.cpp
+
+moc_dialogwidget.o: moc_dialogwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogwidget.o moc_dialogwidget.cpp
 
 ####### Install
 
