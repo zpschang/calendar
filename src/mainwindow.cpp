@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ui_block.h"
-QString MainWindow::str_date[7] = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+QString MainWindow::str_date[7] = {};
 
 MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWidget *parent) :
     QMainWindow(parent),
@@ -10,6 +10,13 @@ MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWi
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    str_date[0] = tr("周日");
+    str_date[1] = tr("周一");
+    str_date[2] = tr("周二");
+    str_date[3] = tr("周三");
+    str_date[4] = tr("周四");
+    str_date[5] = tr("周五");
+    str_date[6] = tr("周六");
     /*
     QMenuBar *menubar = new QMenuBar(this);
     QMenu *menu = new QMenu("menu");
@@ -127,7 +134,7 @@ MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWi
 void MainWindow::update_month()
 {
     QDate now, current = QDateTime::currentDateTime().date();
-    txt_mid->setText(QString::number(year) + QString("年") + QString::number(month) + QString("月"));
+    txt_mid->setText(QString::number(year) + tr("年") + QString::number(month) + tr("月"));
     now.setDate(year, month, 1);
     while(now.dayOfWeek() != 7)
         now = now.addDays(-1);
@@ -237,10 +244,10 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *e)
 {
     QMenu *menu = new QMenu(this);
     QAction *action_login, *action_import, *action_export, *action_merge;
-    action_login = new QAction("登录", this);
-    action_import = new QAction("导入", this);
-    action_export = new QAction("导出", this);
-    action_merge = new QAction("合并", this);
+    action_login = new QAction(tr("登录"), this);
+    action_import = new QAction(tr("导入"), this);
+    action_export = new QAction(tr("导出"), this);
+    action_merge = new QAction(tr("合并"), this);
     menu->addAction(action_login);
     menu->addAction(action_import);
     menu->addAction(action_export);

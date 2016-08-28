@@ -7,6 +7,9 @@
 QT       += core gui
 QT       += xml
 CONFIG   += c++11
+TRANSLATIONS += tr_chinese.ts \
+                 tr_english.ts
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = calendar
@@ -21,7 +24,10 @@ SOURCES += main.cpp\
     eventhandler.cpp \
     form.cpp \
     clicklabel.cpp \
-    draglabel.cpp
+    draglabel.cpp \
+    dialogwidget.cpp \
+    loginhandler.cpp \
+    loginwidget.cpp
 
 HEADERS  += mainwindow.h \
     littlewidget.h \
@@ -30,9 +36,14 @@ HEADERS  += mainwindow.h \
     eventhandler.h \
     form.h \
     clicklabel.h \
-    draglabel.h
+    draglabel.h \
+    dialogwidget.h \
+    loginhandler.h \
+    loginwidget.h
 
 FORMS    += mainwindow.ui \
     littlewidget.ui \
     block.ui \
-    form.ui
+    form.ui \
+    dialogwidget.ui \
+    loginwidget.ui

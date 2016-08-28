@@ -24,7 +24,7 @@ LittleWidget::LittleWidget(EventHandler &_handler, QDate _date, QWidget *parent)
     label = new QLabel(this);
     label->setMargin(6);
     label->setFont(ft);
-    label->setText(" " + QString::number(date.year()) + "年" + QString::number(date.month()) + "月" + QString::number(date.day()) + "日");
+    label->setText(" " + QString::number(date.year()) + tr("年") + QString::number(date.month()) + tr("月") + QString::number(date.day()) + tr("日"));
     QPoint last = label->geometry().bottomLeft() + QPoint(0, 40);
     vector<EventData *> selected;
     for(EventData *event : handler.events)
@@ -70,10 +70,10 @@ LittleWidget::LittleWidget(EventHandler &_handler, QDate _date, QWidget *parent)
     }
     btn = new QPushButton(this);
     btn->move(width()-100, last.y()+20);
-    btn->setText("返回");
+    btn->setText(tr("返回"));
     btn_add = new QPushButton(this);
     btn_add->move(30, last.y()+20);
-    btn_add->setText("添加");
+    btn_add->setText(tr("添加"));
     resize(width(), last.y()+60);
     connect(btn, &QPushButton::clicked, [=](){
         emit close_signal(false);
@@ -145,8 +145,8 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
 
             ClickLabel *edit, *del;
             QVBoxLayout *v_layout = new QVBoxLayout(new_window);
-            edit = new ClickLabel("编辑事件");
-            del = new ClickLabel("删除事件");
+            edit = new ClickLabel(tr("编辑事件"));
+            del = new ClickLabel(tr("删除事件"));
             v_layout->addWidget(edit);
             v_layout->addWidget(del);
 
@@ -164,7 +164,7 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
                 Form *form = new Form(handler);
                 this->form = form;
                 form->read_from_event(event);
-                form->setWindowTitle("编辑事件");
+                form->setWindowTitle(tr("编辑事件"));
                 form->show();
 
                 connect(form, &Form::close_signal, [=](){

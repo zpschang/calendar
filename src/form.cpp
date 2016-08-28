@@ -11,7 +11,7 @@ Form::Form(EventHandler &_handler, QWidget *parent) :
     ui->textEdit->setAcceptDrops(false);
     setAcceptDrops(true);
     ui->label_10->setAutoFillBackground(true);
-    setWindowTitle("添加事件");
+    setWindowTitle(tr("添加事件"));
     color = Qt::white;
     QPalette palette;
     palette.setColor(QPalette::Background, Qt::white);
@@ -118,7 +118,7 @@ void Form::read_from_event(EventData *event)
     ui->comboBox->setCurrentIndex(event->repeat_style);
     ui->spinBox->setValue(event->maxi_index);
     ui->spinBox_2->setValue(event->number);
-    ui->pushButton_2->setText("完成");
+    ui->pushButton_2->setText(tr("完成"));
     ui->pushButton_3->setVisible(false);
     for(QString file_path : event->file_path)
     {

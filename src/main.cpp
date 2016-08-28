@@ -3,12 +3,15 @@
 #include <QCalendarWidget>
 #include <QTimer>
 #include <QDebug>
+#include <QTranslator>
 #include "eventhandler.h"
 #include "loginhandler.h"
 int main(int argc, char *argv[])
-{
+{   
     QApplication a(argc, argv);
-
+    QTranslator translator;
+    translator.load("/Users/pushi/GitHub/calendar/src/tr_english.qm");
+    a.installTranslator(&translator);
     EventHandler handler;
     LoginHandler login_handler;
     MainWindow w(handler, login_handler);

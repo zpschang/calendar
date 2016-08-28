@@ -14,6 +14,7 @@
 #include <QPainter>
 #include <QContextMenuEvent>
 #include <QFileDialog>
+#include <QTranslator>
 #include "block.h"
 #include "littlewidget.h"
 #include "eventhandler.h"
