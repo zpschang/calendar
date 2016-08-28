@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "calendar.h"
 #include <QApplication>
 #include <QCalendarWidget>
 #include <QTimer>
@@ -10,20 +10,15 @@ int main(int argc, char *argv[])
 {   
     QApplication a(argc, argv);
     QTranslator translator;
-    translator.load("/Users/pushi/GitHub/calendar/src/tr_english.qm");
+    translator.load("/Users/pushi/GitHub/calendar/src/tr_chinese.qm");
     a.installTranslator(&translator);
     EventHandler handler;
     LoginHandler login_handler;
-    MainWindow w(handler, login_handler);
-    w.setWindowFlags(Qt::FramelessWindowHint);
-    //w.setWindowOpacity(1);
-    w.setAttribute(Qt::WA_TransparentForMouseEvents);
-    w.show();
+    Calendar *calendar = new Calendar(handler, login_handler, false);
+
     //w.setAutoFillBackground(true);
 
-    QPalette palette;
-    palette.setColor(QPalette::Background, QColor(255, 255, 255, 255));
-    w.setPalette(palette);
+
 
     return a.exec();
 }

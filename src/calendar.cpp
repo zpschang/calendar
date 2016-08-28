@@ -1,13 +1,14 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "calendar.h"
+#include "ui_calendar.h"
 #include "ui_block.h"
-QString MainWindow::str_date[7] = {};
+QString Calendar::str_date[7] = {};
 
-MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWidget *parent) :
+Calendar::Calendar(EventHandler &_handler, LoginHandler &_login_handler, bool _is_fixed, QWidget *parent) :
     QMainWindow(parent),
     handler(_handler),
     login_handler(_login_handler),
-    ui(new Ui::MainWindow)
+    is_fixed(_is_fixed),
+    ui(new Ui::Calendar)
 {
     ui->setupUi(this);
     str_date[0] = tr("周日");
@@ -17,57 +18,34 @@ MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWi
     str_date[4] = tr("周四");
     str_date[5] = tr("周五");
     str_date[6] = tr("周六");
-    /*
-    QMenuBar *menubar = new QMenuBar(this);
-    QMenu *menu = new QMenu("menu");
-    QAction *act_1 = menu->addAction("login");
-    menubar->addMenu(menu);
-    */
+
     v_layout = new QVBoxLayout;
     ui->centralWidget->setLayout(v_layout);
     v_layout->setSpacing(1);
     little_widget = 0;
     login_widget = 0;
+
+
     int i, j;
     for(i = 0; i < 8; i++)
     {
         h_layout[i] = new QHBoxLayout;
         h_layout[i]->setSpacing(1);
         v_layout->addLayout(h_layout[i], (i == 0) ? 1 : 2);
-        if(i > 0)
-        {
-            /*QFrame *line = new QFrame;
-            line->setFrameShape(QFrame::HLine);
-            line->setFrameShadow(QFrame::Sunken);
-            v_layout->addWidget(line);*/
-        }
     }
 
     btn_prev = new QPushButton("<");
     btn_next = new QPushButton(">");
-    is_fixed = false;
-    btn_fix = new QPushButton("+");
-    connect(btn_fix, &QPushButton::clicked, [this]{
-        is_fixed = !is_fixed;
-        QPalette palette;
-        palette.setColor(QPalette::WindowText, is_fixed ? Qt::white : Qt::black);
 
-        int i, j;
+    QPalette palette0;
+    palette0.setColor(QPalette::Background, QColor(255, 255, 255, is_fixed ? 0 : 255));
+    setPalette(palette0);
+    setWindowFlags(Qt::FramelessWindowHint);
+    if(is_fixed)
+        setWindowFlags(windowFlags() | Qt::WindowTransparentForInput);
+    else
+        setWindowFlags(windowFlags() & ~Qt::WindowTransparentForInput);
 
-        palette.setColor(QPalette::Background, QColor(255, 255, 255, is_fixed ? 0 : 255));
-        setPalette(palette);
-        for(i = 0; i < 6; i++)
-            for(j = 0; j < 7; j++)
-                if(block[i][j]->date.month() == month)
-                    block[i][j]->ui->txt->setPalette(palette);
-        palette.setColor(QPalette::Background, Qt::white);
-
-        for(i = 0; i < 7; i++)
-            txt_date[i]->setPalette(palette);
-        txt_mid->setPalette(palette);
-        txt_user->setPalette(palette);
-        btn_fix->setText(is_fixed ? "-" : "+");
-    });
     connect(btn_prev, &QPushButton::clicked, [this]{
         month--;
         if(month == 0)
@@ -88,17 +66,18 @@ MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWi
     ft.setPointSize(20);
     txt_mid->setFont(ft);
     h_layout[0]->addWidget(btn_prev, 1);
-    h_layout[0]->addWidget(txt_user, 1);
     h_layout[0]->addWidget(txt_mid, 7);
-    h_layout[0]->addWidget(btn_fix, 1);
+    h_layout[0]->addWidget(txt_user, 1);
+    //h_layout[0]->addWidget(btn_fix, 1);
     h_layout[0]->addWidget(btn_next, 1);
     QDate current = QDateTime::currentDateTime().date();
     year = current.year(), month = current.month();
     ft.setPointSize(16);
     QPalette palette;
-    palette.setColor(QPalette::WindowText, Qt::black);
+    palette.setColor(QPalette::WindowText, is_fixed ? Qt::white : Qt::black);
     txt_mid->setPalette(palette);
     txt_user->setFont(ft);
+    txt_user->setPalette(palette);
     for(i = 0; i < 7; i++)
     {
         txt_date[i] = new QLabel(str_date[i]);
@@ -108,11 +87,6 @@ MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWi
         txt_date[i]->setFont(ft);
         txt_date[i]->setPalette(palette);
         h_layout[1]->addWidget(txt_date[i]);
-
-        /*QFrame *line = new QFrame;
-        line->setFrameShape(QFrame::VLine);
-        line->setFrameShadow(QFrame::Sunken);
-        h_layout[1]->addWidget(line);*/
     }
     for(i = 0; i < 6; i++)
         for(j = 0; j < 7; j++)
@@ -123,15 +97,22 @@ MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWi
             block[i][j]->ui->txt->setMargin(5);
             block[i][j]->setFont(ft);
             h_layout[i+2]->addWidget(block[i][j]);
-            /*QFrame *line = new QFrame;
-            line->setFrameShape(QFrame::VLine);
-            line->setFrameShadow(QFrame::Sunken);
-            h_layout[i+2]->addWidget(line);*/
         }
     update_month();
+    show();
+    QMenuBar *menubar = new QMenuBar(this);
+    QMenu *menu = new QMenu("菜单");
+    menubar->addMenu(menu);
+    QAction *action = menu->addAction(is_fixed ? "解除固定" : "固定");
+    connect(action, &QAction::triggered, [=]{
+        Calendar *new_calendar = new Calendar(handler, login_handler, !is_fixed);
+        new_calendar->show();
+        new_calendar->move(pos());
+        deleteLater();
+    });
 }
 
-void MainWindow::update_month()
+void Calendar::update_month()
 {
     QDate now, current = QDateTime::currentDateTime().date();
     txt_mid->setText(QString::number(year) + tr("年") + QString::number(month) + tr("月"));
@@ -173,7 +154,7 @@ void MainWindow::update_month()
         }
 }
 
-void MainWindow::paintEvent(QPaintEvent *)
+void Calendar::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setBrush(QBrush(QColor(0, 255, 0, 255)));
@@ -196,32 +177,32 @@ void MainWindow::paintEvent(QPaintEvent *)
         }
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *e)
+void Calendar::mousePressEvent(QMouseEvent *e)
 {
     pointer = e->globalPos();
     is_clicked = true;
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *e)
+void Calendar::mouseMoveEvent(QMouseEvent *e)
 {
-    if(is_clicked)
+    if(is_clicked && !is_fixed)
     {
         move(pos() + e->globalPos() - pointer);
         pointer = e->globalPos();
     }
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *)
+void Calendar::mouseReleaseEvent(QMouseEvent *)
 {
     is_clicked = false;
 }
 
-void MainWindow::closeEvent(QCloseEvent *)
+void Calendar::closeEvent(QCloseEvent *)
 {
     //e->ignore();
 }
 
-void MainWindow::slot(bool is_create, Block *block)
+void Calendar::slot(bool is_create, Block *block)
 {
     if(is_create)
     {
@@ -240,7 +221,7 @@ void MainWindow::slot(bool is_create, Block *block)
         little_widget = 0;
 }
 
-void MainWindow::contextMenuEvent(QContextMenuEvent *e)
+void Calendar::contextMenuEvent(QContextMenuEvent *)
 {
     QMenu *menu = new QMenu(this);
     QAction *action_login, *action_import, *action_export, *action_merge;
@@ -324,7 +305,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *e)
 
 }
 
-bool MainWindow::eventFilter(QObject *obj, QEvent *e)
+bool Calendar::eventFilter(QObject *obj, QEvent *e)
 {
     if(e->type() == QEvent::MouseButtonPress && ((QMouseEvent *)e)->button() == Qt::LeftButton)
     {
@@ -357,7 +338,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *e)
     return QMainWindow::eventFilter(obj, e);
 }
 
-MainWindow::~MainWindow()
+Calendar::~Calendar()
 {
     delete login_widget;
     delete little_widget;

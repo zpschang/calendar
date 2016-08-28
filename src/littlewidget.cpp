@@ -40,7 +40,7 @@ LittleWidget::LittleWidget(EventHandler &_handler, QDate _date, QWidget *parent)
         if(index >= 0)
         {
             QPalette palette;
-            palette.setColor(QPalette::Background, Qt::red);
+            palette.setColor(QPalette::Background, event->color);
             ft.setPointSize(32);
             QWidget *widget = new QWidget(this);
             m_map[widget] = make_pair(event, index);
@@ -54,6 +54,7 @@ LittleWidget::LittleWidget(EventHandler &_handler, QDate _date, QWidget *parent)
             label_event->setMargin(6);
             label_event->setText(event->name);
             label_event->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+            label_event->setAutoFillBackground(true);
             label_event->setPalette(palette);
             h_layout->addWidget(label_event);
 
@@ -64,6 +65,7 @@ LittleWidget::LittleWidget(EventHandler &_handler, QDate _date, QWidget *parent)
             label_time->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
             label_time->setText(event->start_time.toString("HH:mm") + " - " + event->end_time.toString("HH:mm"));
             h_layout->addWidget(label_time);
+            label_time->setAutoFillBackground(true);
             label_time->setPalette(palette);
             last = widget->geometry().bottomLeft();
         }

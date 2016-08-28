@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef Calendar_H
+#define Calendar_H
 
 #include <QMainWindow>
 #include <QHBoxLayout>
@@ -21,21 +21,21 @@
 #include "loginwidget.h"
 #include "loginhandler.h"
 namespace Ui {
-class MainWindow;
+class Calendar;
 }
 
-class MainWindow : public QMainWindow
+class Calendar : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(EventHandler &, LoginHandler &, QWidget *parent = 0);
+    explicit Calendar(EventHandler &, LoginHandler &, bool, QWidget *parent = 0);
     EventHandler &handler;
     LoginHandler &login_handler;
-    ~MainWindow();
+    ~Calendar();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::Calendar *ui;
     QVBoxLayout *v_layout;
     QHBoxLayout *h_layout[8];
     QPushButton *btn_prev, *btn_next, *btn_fix;
@@ -62,4 +62,4 @@ private:
     void slot(bool, Block *);
 };
 
-#endif // MAINWINDOW_H
+#endif // Calendar_H

@@ -17,7 +17,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     littlewidget.cpp \
     block.cpp \
     eventdata.cpp \
@@ -27,9 +26,10 @@ SOURCES += main.cpp\
     draglabel.cpp \
     dialogwidget.cpp \
     loginhandler.cpp \
-    loginwidget.cpp
+    loginwidget.cpp \
+    calendar.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     littlewidget.h \
     block.h \
     eventdata.h \
@@ -39,11 +39,13 @@ HEADERS  += mainwindow.h \
     draglabel.h \
     dialogwidget.h \
     loginhandler.h \
-    loginwidget.h
+    loginwidget.h \
+    calendar.h
 
-FORMS    += mainwindow.ui \
+FORMS    += \
     littlewidget.ui \
     block.ui \
     form.ui \
     dialogwidget.ui \
-    loginwidget.ui
+    loginwidget.ui \
+    calendar.ui
