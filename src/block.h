@@ -20,7 +20,7 @@ public:
     explicit Block(EventHandler &_handler, QWidget *parent = 0);
     EventHandler &handler;
     QDate date;
-    void load();
+    void load(bool);
     ~Block();
     Ui::Block *ui;
 private:

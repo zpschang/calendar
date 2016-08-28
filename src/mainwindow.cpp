@@ -152,7 +152,7 @@ void MainWindow::update_month()
         {
             block[i][j]->ui->txt->setText(QString::number(now.day()));
             block[i][j]->date = now;
-            block[i][j]->load();
+            block[i][j]->load(is_fixed);
             QPalette palette;
             if(now.month() != month)
                 palette.setColor(QPalette::WindowText, Qt::gray);
@@ -223,7 +223,7 @@ void MainWindow::slot(bool is_create, Block *block)
     {
         for(int i = 0; i < 6; i++)
             for(int j = 0; j < 7; j++)
-                this->block[i][j]->load();
+                this->block[i][j]->load(is_fixed);
         QPoint pos = little_widget->pos();
         little_widget = new LittleWidget(handler, block->date);
         little_widget->move(pos);

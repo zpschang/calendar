@@ -163,24 +163,10 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
                 }
                 Form *form = new Form(handler);
                 this->form = form;
-                form->ui->dateEdit->setDate(event->start_date);
-                form->ui->timeEdit->setTime(event->start_time);
-                form->ui->timeEdit_2->setTime(event->end_time);
-                form->ui->lineEdit->setText(event->name);
-                form->ui->textEdit->setText(event->description);
-                form->ui->comboBox->setCurrentIndex(event->repeat_style);
-                form->ui->spinBox->setValue(event->maxi_index);
-                form->ui->spinBox_2->setValue(event->number);
-                form->ui->pushButton_2->setText("完成");
-                form->ui->pushButton_3->setVisible(false);
+                form->read_from_event(event);
                 form->setWindowTitle("编辑事件");
                 form->show();
-                for(int i = 0; i < (int)handler.events.size(); i++)
-                    if(handler.events[i] == event)
-                    {
-                        handler.events.erase(handler.events.begin() + i);
-                        break;
-                    }
+
                 connect(form, &Form::close_signal, [=](){
                     emit close_signal(true);
                     delete this;

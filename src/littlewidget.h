@@ -37,6 +37,7 @@ public:
     Form *form;
     DialogWidget *dialog;
     map<QWidget*, pair<EventData*, int> > m_map;
+
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);

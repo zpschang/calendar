@@ -6,6 +6,7 @@
 #include <set>
 #include <vector>
 #include <algorithm>
+#include <QColor>
 using namespace std;
 class EventData
 {
@@ -19,6 +20,7 @@ public:
     vector<QString> file_path;
     QTime start_time, end_time;
     set<int> deleted_index;
+    QColor color;
     void del_day(int index);
     void del_day_after(int index);
     int is_in(QDate date);

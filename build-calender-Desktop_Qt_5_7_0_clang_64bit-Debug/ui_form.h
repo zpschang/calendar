@@ -61,7 +61,9 @@ public:
     QCheckBox *checkBox;
     QHBoxLayout *horizontalLayout_7;
     QLabel *label;
+    QLabel *label_10;
     QPushButton *pushButton;
+    QSpacerItem *horizontalSpacer_2;
     QHBoxLayout *horizontalLayout_8;
     QLabel *label_8;
     QWidget *widget;
@@ -76,7 +78,7 @@ public:
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QStringLiteral("Form"));
-        Form->resize(491, 526);
+        Form->resize(513, 526);
         verticalLayout = new QVBoxLayout(Form);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout = new QHBoxLayout();
@@ -252,17 +254,41 @@ public:
         verticalLayout->addLayout(horizontalLayout_5);
 
         horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setSpacing(5);
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         label = new QLabel(Form);
         label->setObjectName(QStringLiteral("label"));
 
         horizontalLayout_7->addWidget(label);
 
+        label_10 = new QLabel(Form);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(label_10->sizePolicy().hasHeightForWidth());
+        label_10->setSizePolicy(sizePolicy4);
+        label_10->setFrameShape(QFrame::Box);
+        label_10->setMargin(7);
+        label_10->setIndent(-1);
+
+        horizontalLayout_7->addWidget(label_10);
+
         pushButton = new QPushButton(Form);
         pushButton->setObjectName(QStringLiteral("pushButton"));
+        sizePolicy1.setHeightForWidth(pushButton->sizePolicy().hasHeightForWidth());
+        pushButton->setSizePolicy(sizePolicy1);
 
         horizontalLayout_7->addWidget(pushButton);
 
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_2);
+
+        horizontalLayout_7->setStretch(0, 1);
+        horizontalLayout_7->setStretch(1, 1);
+        horizontalLayout_7->setStretch(2, 1);
+        horizontalLayout_7->setStretch(3, 10);
 
         verticalLayout->addLayout(horizontalLayout_7);
 
@@ -339,7 +365,8 @@ public:
         label_9->setText(QApplication::translate("Form", "\351\207\215\345\244\215\346\254\241\346\225\260\357\274\232", 0));
         checkBox->setText(QApplication::translate("Form", "\346\227\240\351\231\220\351\207\215\345\244\215", 0));
         label->setText(QApplication::translate("Form", "\351\242\234\350\211\262\357\274\232", 0));
-        pushButton->setText(QApplication::translate("Form", "PushButton", 0));
+        label_10->setText(QString());
+        pushButton->setText(QApplication::translate("Form", "\344\277\256\346\224\271", 0));
         label_8->setText(QApplication::translate("Form", "\346\226\207\344\273\266\357\274\232", 0));
         pushButton_3->setText(QApplication::translate("Form", "\345\217\226\346\266\210", 0));
         pushButton_2->setText(QApplication::translate("Form", "\346\267\273\345\212\240", 0));
