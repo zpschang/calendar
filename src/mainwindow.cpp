@@ -3,9 +3,10 @@
 #include "ui_block.h"
 QString MainWindow::str_date[7] = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
 
-MainWindow::MainWindow(EventHandler &_handler, QWidget *parent) :
+MainWindow::MainWindow(EventHandler &_handler, LoginHandler &_login_handler, QWidget *parent) :
     QMainWindow(parent),
     handler(_handler),
+    login_handler(_login_handler),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -19,6 +20,7 @@ MainWindow::MainWindow(EventHandler &_handler, QWidget *parent) :
     ui->centralWidget->setLayout(v_layout);
     v_layout->setSpacing(1);
     little_widget = 0;
+    login_widget = 0;
     int i, j;
     for(i = 0; i < 8; i++)
     {
@@ -44,16 +46,7 @@ MainWindow::MainWindow(EventHandler &_handler, QWidget *parent) :
         palette.setColor(QPalette::WindowText, is_fixed ? Qt::white : Qt::black);
 
         int i, j;
-        for(i = 0; i < 6; i++)
-            for(j = 0; j < 7; j++)
-            {
-                block[i][j]->ui->label_1->setPalette(palette);
-                //block[i][j]->ui->label_2->setPalette(palette);
-                block[i][j]->ui->label_3->setPalette(palette);
-                block[i][j]->ui->label_4->setPalette(palette);
-                //block[i][j]->ui->label_5->setPalette(palette);
-                block[i][j]->ui->label_6->setPalette(palette);
-            }
+
         palette.setColor(QPalette::Background, QColor(255, 255, 255, is_fixed ? 0 : 255));
         setPalette(palette);
         for(i = 0; i < 6; i++)
@@ -65,6 +58,7 @@ MainWindow::MainWindow(EventHandler &_handler, QWidget *parent) :
         for(i = 0; i < 7; i++)
             txt_date[i]->setPalette(palette);
         txt_mid->setPalette(palette);
+        txt_user->setPalette(palette);
         btn_fix->setText(is_fixed ? "-" : "+");
     });
     connect(btn_prev, &QPushButton::clicked, [this]{
@@ -79,13 +73,15 @@ MainWindow::MainWindow(EventHandler &_handler, QWidget *parent) :
             month = 1, year++;
         update_month();
     });
-
+    txt_user = new QLabel(tr("用户：") + "\"\"");
+    txt_user->setAlignment(Qt::AlignCenter);
     txt_mid = new QLabel;
     txt_mid->setAlignment(Qt::AlignCenter);
     QFont ft;
     ft.setPointSize(20);
     txt_mid->setFont(ft);
     h_layout[0]->addWidget(btn_prev, 1);
+    h_layout[0]->addWidget(txt_user, 1);
     h_layout[0]->addWidget(txt_mid, 7);
     h_layout[0]->addWidget(btn_fix, 1);
     h_layout[0]->addWidget(btn_next, 1);
@@ -95,6 +91,7 @@ MainWindow::MainWindow(EventHandler &_handler, QWidget *parent) :
     QPalette palette;
     palette.setColor(QPalette::WindowText, Qt::black);
     txt_mid->setPalette(palette);
+    txt_user->setFont(ft);
     for(i = 0; i < 7; i++)
     {
         txt_date[i] = new QLabel(str_date[i]);
@@ -236,9 +233,93 @@ void MainWindow::slot(bool is_create, Block *block)
         little_widget = 0;
 }
 
+void MainWindow::contextMenuEvent(QContextMenuEvent *e)
+{
+    QMenu *menu = new QMenu(this);
+    QAction *action_login, *action_import, *action_export, *action_merge;
+    action_login = new QAction("登录", this);
+    action_import = new QAction("导入", this);
+    action_export = new QAction("导出", this);
+    action_merge = new QAction("合并", this);
+    menu->addAction(action_login);
+    menu->addAction(action_import);
+    menu->addAction(action_export);
+    menu->addAction(action_merge);
+    connect(action_login, &QAction::triggered, [=]{
+        if(this->login_widget)
+        {
+            delete this->login_widget;
+            this->login_widget = 0;
+        }
+        LoginWidget *login_widget = new LoginWidget;
+        login_widget->show();
+        this->login_widget = login_widget;
+        connect(login_widget, &LoginWidget::login, [=](QString user, QString password){
+            QString info = login_handler.login(user, password);
+            if(info == "success")
+            {
+                handler.user = user;
+                handler.password = password;
+                txt_user->setText(tr("用户：") + "\"" + user + "\"");
+                handler.events.clear();
+                for(int i = 0; i < 6; i++)
+                    for(int j = 0; j < 7; j++)
+                        block[i][j]->load(is_fixed);
+            }
+            qDebug() << info;
+        });
+        connect(login_widget, &LoginWidget::regist, [=](QString user, QString password){
+            QString info = login_handler.regist(user, password);
+            if(info == "success")
+            {
+                handler.user = user;
+                handler.password = password;
+                txt_user->setText(tr("用户") + "\"" + user + "\"");
+                handler.events.clear();
+                for(int i = 0; i < 6; i++)
+                    for(int j = 0; j < 7; j++)
+                        block[i][j]->load(is_fixed);
+            }
+            qDebug() << info;
+        });
+    });
+    connect(action_import, &QAction::triggered, [=]{
+        QUrl url = QFileDialog::getOpenFileUrl(this);
+        QString info = handler.read_data(url.path());
+        qDebug() << info;
+        if(info == "success")
+        {
+            for(int i = 0; i < 6; i++)
+                for(int j = 0; j < 7; j++)
+                    block[i][j]->load(is_fixed);
+        }
+    });
+    connect(action_export, &QAction::triggered, [=]{
+        QUrl url = QFileDialog::getSaveFileUrl(this);
+        handler.write_data(url.path());
+    });
+    connect(action_merge, &QAction::triggered, [=]{
+        QUrl url = QFileDialog::getOpenFileUrl(this);
+        EventHandler _handler;
+        _handler.user = handler.user;
+        _handler.password = handler.password;
+        QString info = _handler.read_data(url.path());
+        qDebug() << info;
+        if(info == "success")
+        {
+            handler.merge(_handler);
+            for(int i = 0; i < 6; i++)
+                for(int j = 0; j < 7; j++)
+                    block[i][j]->load(is_fixed);
+        }
+    });
+    menu->exec(cursor().pos());
+
+}
+
 bool MainWindow::eventFilter(QObject *obj, QEvent *e)
 {
-    if(e->type() == QEvent::MouseButtonPress)
+    if(e->type() == QEvent::MouseButtonPress && ((QMouseEvent *)e)->button() == Qt::LeftButton)
     {
         if(little_widget)
         {
@@ -271,5 +352,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *e)
 
 MainWindow::~MainWindow()
 {
+    delete login_widget;
+    delete little_widget;
     delete ui;
 }

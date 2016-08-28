@@ -39,7 +39,7 @@ void Block::load(bool is_fixed)
     {
         ui->label_1->setText("");
         ui->label_4->setText("");
-        palette.setColor(QPalette::Background, QColor(255, 255, 255, is_fixed ? 0 : 255));
+        palette.setColor(QPalette::Background, QColor(255, 255, 255, 0));
     }
     ui->label_1->setPalette(palette);
     ui->label_4->setPalette(palette);
@@ -53,7 +53,7 @@ void Block::load(bool is_fixed)
     {
         ui->label_2->setText("");
         ui->label_5->setText("");
-        palette.setColor(QPalette::Background, QColor(255, 255, 255, is_fixed ? 0 : 255));
+        palette.setColor(QPalette::Background, QColor(255, 255, 255, 0));
     }
     ui->label_2->setPalette(palette);
     ui->label_5->setPalette(palette);
@@ -67,10 +67,13 @@ void Block::load(bool is_fixed)
     {
         ui->label_3->setText("");
         ui->label_6->setText("");
-        palette.setColor(QPalette::Background, QColor(255, 255, 255, is_fixed ? 0 : 255));
+        palette.setColor(QPalette::Background, QColor(255, 255, 255, 0));
     }
     ui->label_3->setPalette(palette);
     ui->label_6->setPalette(palette);
+    //palette.setColor(QPalette::Background, QColor(255, 255, 255, is_fixed ? 0 : 255));
+    //setPalette(palette);
+    //if(data == )
 }
 
 Block::~Block()

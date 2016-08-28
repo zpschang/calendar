@@ -11,10 +11,12 @@ class EventHandler
 {
 public:
     vector<EventData *> events;
-    QString user_name;
+    QString user, password, file_name;
     EventHandler();
-    QString read_data(QString _user_name);
-    void write_data();
+    ~EventHandler();
+    QString read_data(QString);
+    void write_data(QString);
+    void merge(EventHandler &);
 };
 
 #endif // EVENTHANDLER_H

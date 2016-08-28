@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     form.cpp \
     clicklabel.cpp \
     draglabel.cpp \
-    dialogwidget.cpp
+    dialogwidget.cpp \
+    loginhandler.cpp \
+    loginwidget.cpp
 
 HEADERS  += mainwindow.h \
     littlewidget.h \
@@ -32,10 +34,13 @@ HEADERS  += mainwindow.h \
     form.h \
     clicklabel.h \
     draglabel.h \
-    dialogwidget.h
+    dialogwidget.h \
+    loginhandler.h \
+    loginwidget.h
 
 FORMS    += mainwindow.ui \
     littlewidget.ui \
     block.ui \
     form.ui \
-    dialogwidget.ui
+    dialogwidget.ui \
+    loginwidget.ui

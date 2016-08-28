@@ -108,6 +108,7 @@ void Form::read_from_event(EventData *event)
     this->event = event;
     QPalette palette;
     palette.setColor(QPalette::Background, event->color);
+    color = event->color;
     ui->label_10->setPalette(palette);
     ui->dateEdit->setDate(event->start_date);
     ui->timeEdit->setTime(event->start_time);
@@ -125,7 +126,7 @@ void Form::read_from_event(EventData *event)
         connect(label, &DragLabel::right_signal, [=](){
             ui->verticalLayout_4->removeWidget(label);
             label->deleteLater();
-            for(int i = 0; i < file_paths.size(); i++)
+            for(int i = 0; i < (int)file_paths.size(); i++)
                 if(file_paths[i] == label->text())
                 {
                     file_paths.erase(file_paths.begin() + i);

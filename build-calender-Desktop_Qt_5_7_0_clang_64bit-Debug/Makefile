@@ -57,13 +57,16 @@ SOURCES       = ../src/main.cpp \
 		../src/form.cpp \
 		../src/clicklabel.cpp \
 		../src/draglabel.cpp \
-		../src/dialogwidget.cpp moc_mainwindow.cpp \
+		../src/dialogwidget.cpp \
+		../src/loginhandler.cpp \
+		../src/loginwidget.cpp moc_mainwindow.cpp \
 		moc_littlewidget.cpp \
 		moc_block.cpp \
 		moc_form.cpp \
 		moc_clicklabel.cpp \
 		moc_draglabel.cpp \
-		moc_dialogwidget.cpp
+		moc_dialogwidget.cpp \
+		moc_loginwidget.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		littlewidget.o \
@@ -74,13 +77,16 @@ OBJECTS       = main.o \
 		clicklabel.o \
 		draglabel.o \
 		dialogwidget.o \
+		loginhandler.o \
+		loginwidget.o \
 		moc_mainwindow.o \
 		moc_littlewidget.o \
 		moc_block.o \
 		moc_form.o \
 		moc_clicklabel.o \
 		moc_draglabel.o \
-		moc_dialogwidget.o
+		moc_dialogwidget.o \
+		moc_loginwidget.o
 DIST          = ../../../Qt5/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt5/5.7/clang_64/mkspecs/qdevice.pri \
 		../../../Qt5/5.7/clang_64/mkspecs/features/device_config.prf \
@@ -244,7 +250,9 @@ DIST          = ../../../Qt5/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../src/form.h \
 		../src/clicklabel.h \
 		../src/draglabel.h \
-		../src/dialogwidget.h ../src/main.cpp \
+		../src/dialogwidget.h \
+		../src/loginhandler.h \
+		../src/loginwidget.h ../src/main.cpp \
 		../src/mainwindow.cpp \
 		../src/littlewidget.cpp \
 		../src/block.cpp \
@@ -253,7 +261,9 @@ DIST          = ../../../Qt5/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../src/form.cpp \
 		../src/clicklabel.cpp \
 		../src/draglabel.cpp \
-		../src/dialogwidget.cpp
+		../src/dialogwidget.cpp \
+		../src/loginhandler.cpp \
+		../src/loginwidget.cpp
 QMAKE_TARGET  = calendar
 DESTDIR       = 
 TARGET        = calendar.app/Contents/MacOS/calendar
@@ -262,7 +272,7 @@ TARGET        = calendar.app/Contents/MacOS/calendar
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h ui_loginwidget.h $(OBJECTS)  
 	@test -d calendar.app/Contents/MacOS/ || mkdir -p calendar.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -616,9 +626,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/mainwindow.h ../src/littlewidget.h ../src/block.h ../src/eventdata.h ../src/eventhandler.h ../src/form.h ../src/clicklabel.h ../src/draglabel.h ../src/dialogwidget.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/main.cpp ../src/mainwindow.cpp ../src/littlewidget.cpp ../src/block.cpp ../src/eventdata.cpp ../src/eventhandler.cpp ../src/form.cpp ../src/clicklabel.cpp ../src/draglabel.cpp ../src/dialogwidget.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/mainwindow.ui ../src/littlewidget.ui ../src/block.ui ../src/form.ui ../src/dialogwidget.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/mainwindow.h ../src/littlewidget.h ../src/block.h ../src/eventdata.h ../src/eventhandler.h ../src/form.h ../src/clicklabel.h ../src/draglabel.h ../src/dialogwidget.h ../src/loginhandler.h ../src/loginwidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/main.cpp ../src/mainwindow.cpp ../src/littlewidget.cpp ../src/block.cpp ../src/eventdata.cpp ../src/eventhandler.cpp ../src/form.cpp ../src/clicklabel.cpp ../src/draglabel.cpp ../src/dialogwidget.cpp ../src/loginhandler.cpp ../src/loginwidget.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/mainwindow.ui ../src/littlewidget.ui ../src/block.ui ../src/form.ui ../src/dialogwidget.ui ../src/loginwidget.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -644,9 +654,9 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp moc_dialogwidget.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp moc_dialogwidget.cpp moc_loginwidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp moc_dialogwidget.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_littlewidget.cpp moc_block.cpp moc_form.cpp moc_clicklabel.cpp moc_draglabel.cpp moc_dialogwidget.cpp moc_loginwidget.cpp
 moc_mainwindow.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
@@ -668,6 +678,9 @@ moc_mainwindow.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QM
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmenubar.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QPainter \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QContextMenuEvent \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		../src/block.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
@@ -681,6 +694,8 @@ moc_mainwindow.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QM
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
 		../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QMenu \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmenu.h \
@@ -691,6 +706,8 @@ moc_mainwindow.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QM
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDropEvent \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QMimeData \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QList \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qlist.h \
@@ -698,6 +715,16 @@ moc_mainwindow.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QM
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
 		../src/dialogwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../src/loginwidget.h \
+		../src/loginhandler.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QString \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QIODevice \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qiodevice.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDataStream \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatastream.h \
 		../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/bin/moc
 	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/mainwindow.h -o moc_mainwindow.cpp
@@ -724,6 +751,8 @@ moc_littlewidget.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
 		../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/form.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QCloseEvent \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
@@ -732,6 +761,8 @@ moc_littlewidget.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QList \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qlist.h \
@@ -739,6 +770,8 @@ moc_littlewidget.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
 		../src/dialogwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/bin/moc
 	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/littlewidget.h -o moc_littlewidget.cpp
@@ -760,6 +793,8 @@ moc_block.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
 		../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/block.h \
 		../../../Qt5/5.7/clang_64/bin/moc
 	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/block.h -o moc_block.cpp
@@ -774,6 +809,8 @@ moc_form.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget 
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		../src/eventhandler.h \
 		../../../Qt5/5.7/clang_64/lib/QtXml.framework/Headers/QDomElement \
 		../../../Qt5/5.7/clang_64/lib/QtXml.framework/Headers/qdom.h \
@@ -785,6 +822,8 @@ moc_form.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget 
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDate \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatetime.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
@@ -821,15 +860,23 @@ moc_draglabel.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QLa
 
 moc_dialogwidget.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../src/dialogwidget.h \
 		../../../Qt5/5.7/clang_64/bin/moc
 	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/dialogwidget.h -o moc_dialogwidget.cpp
 
+moc_loginwidget.cpp: ../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../src/loginwidget.h \
+		../../../Qt5/5.7/clang_64/bin/moc
+	/Users/pushi/Qt5/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/pushi/Qt5/5.7/clang_64/mkspecs/macx-clang -I/Users/pushi/GitHub/calendar/src -I/Users/pushi/Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtXml.framework/Headers -I/Users/pushi/Qt5/5.7/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include -I/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/pushi/Qt5/5.7/clang_64/lib ../src/loginwidget.h -o moc_loginwidget.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h
+compiler_uic_make_all: ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h ui_loginwidget.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h
+	-$(DEL_FILE) ui_mainwindow.h ui_littlewidget.h ui_block.h ui_form.h ui_dialogwidget.h ui_loginwidget.h
 ui_mainwindow.h: ../src/mainwindow.ui \
 		../../../Qt5/5.7/clang_64/bin/uic
 	/Users/pushi/Qt5/5.7/clang_64/bin/uic ../src/mainwindow.ui -o ui_mainwindow.h
@@ -849,6 +896,10 @@ ui_form.h: ../src/form.ui \
 ui_dialogwidget.h: ../src/dialogwidget.ui \
 		../../../Qt5/5.7/clang_64/bin/uic
 	/Users/pushi/Qt5/5.7/clang_64/bin/uic ../src/dialogwidget.ui -o ui_dialogwidget.h
+
+ui_loginwidget.h: ../src/loginwidget.ui \
+		../../../Qt5/5.7/clang_64/bin/uic
+	/Users/pushi/Qt5/5.7/clang_64/bin/uic ../src/loginwidget.ui -o ui_loginwidget.h
 
 compiler_rez_source_make_all:
 compiler_rez_source_clean:
@@ -884,6 +935,9 @@ main.o: ../src/main.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmenubar.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QPainter \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QContextMenuEvent \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		../src/block.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
@@ -897,6 +951,8 @@ main.o: ../src/main.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
 		../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QMenu \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmenu.h \
@@ -907,6 +963,8 @@ main.o: ../src/main.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDropEvent \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QMimeData \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QList \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qlist.h \
@@ -914,6 +972,16 @@ main.o: ../src/main.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
 		../src/dialogwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../src/loginwidget.h \
+		../src/loginhandler.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QString \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QIODevice \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qiodevice.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDataStream \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatastream.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QCalendarWidget \
@@ -944,6 +1012,9 @@ mainwindow.o: ../src/mainwindow.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmenubar.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QPainter \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QContextMenuEvent \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		../src/block.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
@@ -957,6 +1028,8 @@ mainwindow.o: ../src/mainwindow.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
 		../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QMenu \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qmenu.h \
@@ -967,6 +1040,8 @@ mainwindow.o: ../src/mainwindow.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDropEvent \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QMimeData \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QList \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qlist.h \
@@ -974,6 +1049,16 @@ mainwindow.o: ../src/mainwindow.cpp ../src/mainwindow.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
 		../src/dialogwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../src/loginwidget.h \
+		../src/loginhandler.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QString \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QIODevice \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qiodevice.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDataStream \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatastream.h \
 		ui_mainwindow.h \
 		ui_block.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../src/mainwindow.cpp
@@ -1001,6 +1086,8 @@ littlewidget.o: ../src/littlewidget.cpp ../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
 		../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/form.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QCloseEvent \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
@@ -1009,6 +1096,8 @@ littlewidget.o: ../src/littlewidget.cpp ../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QList \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qlist.h \
@@ -1016,6 +1105,8 @@ littlewidget.o: ../src/littlewidget.cpp ../src/littlewidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qdrag.h \
 		../src/clicklabel.h \
 		../src/dialogwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		ui_littlewidget.h \
 		ui_form.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
@@ -1040,6 +1131,8 @@ block.o: ../src/block.cpp ../src/block.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
 		../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		ui_block.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o block.o ../src/block.cpp
 
@@ -1047,6 +1140,8 @@ eventdata.o: ../src/eventdata.cpp ../src/eventdata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDate \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatetime.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eventdata.o ../src/eventdata.cpp
@@ -1062,6 +1157,8 @@ eventhandler.o: ../src/eventhandler.cpp ../src/eventhandler.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDate \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatetime.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QIODevice \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qiodevice.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDebug \
@@ -1083,6 +1180,8 @@ form.o: ../src/form.cpp ../src/form.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QColorDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		../src/eventhandler.h \
 		../../../Qt5/5.7/clang_64/lib/QtXml.framework/Headers/QDomElement \
 		../../../Qt5/5.7/clang_64/lib/QtXml.framework/Headers/qdom.h \
@@ -1094,6 +1193,8 @@ form.o: ../src/form.cpp ../src/form.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDate \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatetime.h \
 		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/QColor \
+		../../../Qt5/5.7/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		../src/draglabel.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
@@ -1128,8 +1229,27 @@ draglabel.o: ../src/draglabel.cpp ../src/draglabel.h \
 dialogwidget.o: ../src/dialogwidget.cpp ../src/dialogwidget.h \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		ui_dialogwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogwidget.o ../src/dialogwidget.cpp
+
+loginhandler.o: ../src/loginhandler.cpp ../src/loginhandler.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QString \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QFile \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qfile.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QIODevice \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qiodevice.h \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/QDataStream \
+		../../../Qt5/5.7/clang_64/lib/QtCore.framework/Headers/qdatastream.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loginhandler.o ../src/loginhandler.cpp
+
+loginwidget.o: ../src/loginwidget.cpp ../src/loginwidget.h \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../Qt5/5.7/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		ui_loginwidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o loginwidget.o ../src/loginwidget.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
@@ -1151,6 +1271,9 @@ moc_draglabel.o: moc_draglabel.cpp
 
 moc_dialogwidget.o: moc_dialogwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogwidget.o moc_dialogwidget.cpp
+
+moc_loginwidget.o: moc_loginwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_loginwidget.o moc_loginwidget.cpp
 
 ####### Install
 

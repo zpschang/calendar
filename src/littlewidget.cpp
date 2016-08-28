@@ -185,19 +185,16 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
                 //dialog->setWindowOpacity(0.9);
                 dialog->show();
                 connect(dialog, &DialogWidget::del_0, [=](){
-                    delete dialog;
                     event->del_day(index);
                     emit close_signal(true);
                     delete this;
                 });
                 connect(dialog, &DialogWidget::del_1, [=](){
-                    delete dialog;
                     event->del_day_after(index);
                     emit close_signal(true);
                     delete this;
                 });
                 connect(dialog, &DialogWidget::del_2, [=](){
-                    delete dialog;
                     for(int i = 0; i < (int)handler.events.size(); i++)
                         if(handler.events[i] == event)
                         {
@@ -227,15 +224,16 @@ bool LittleWidget::eventFilter(QObject *watched, QEvent *event)
 
 void LittleWidget::closeEvent(QCloseEvent *)
 {
+
+}
+
+LittleWidget::~LittleWidget()
+{
     if(form)
         delete form;
     if(menu_window)
         delete menu_window;
     if(dialog)
         delete dialog;
-}
-
-LittleWidget::~LittleWidget()
-{
     delete ui;
 }
